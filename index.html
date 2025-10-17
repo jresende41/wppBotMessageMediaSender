@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bot WhatsApp</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #log { background: #eee; padding: 10px; height: 200px; overflow-y: auto; white-space: pre-wrap; }
+    button { margin: 5px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>Bot WhatsApp</h1>
+  <button id="start">▶️ Iniciar</button>
+  <button id="stop">⏹️ Parar</button>
+  <div id="log"></div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const logDiv = document.getElementById('log');
+
+    document.getElementById('start').onclick = () => ipcRenderer.send('start-bot');
+    document.getElementById('stop').onclick = () => ipcRenderer.send('stop-bot');
+
+    ipcRenderer.on('bot-log', (event, msg) => {
+      logDiv.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    });
+  </script>
+</body>
+</html>
